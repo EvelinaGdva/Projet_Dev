@@ -18,11 +18,11 @@
             <div class="wrapper">
                 <ul>
                     <li><a href="index.php">Home</a></li>
-                    <li><a href="../Controller/adminController.php">Admin</a></li>
-                    <li><a href="../Controller/categoryController.php">Category</a></li>
-                    <li><a href="../Controller/foodController.php">Food</a></li>
-                    <li><a href="../Controller/orderController.php">Order</a></li>
-                    <li><a href="../Controller/logout.php">Logout</a></li>
+                    <li><a href="adminController.php">Admin</a></li>
+                    <li><a href="categoryController.php">Category</a></li>
+                    <li><a href="foodController.php">Food</a></li>
+                    <li><a href="orderController.php">Order</a></li>
+                    <li><a href="logout.php">Logout</a></li>
                 </ul>
             </div>
         </div>
