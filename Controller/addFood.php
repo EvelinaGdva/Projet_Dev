@@ -2,7 +2,7 @@
 
 <div class="main-content">
     <div class="wrapper">
-        <h1>Ajouter un plat</h1>
+        <h1>Add Food</h1>
 
         <br><br>
 
