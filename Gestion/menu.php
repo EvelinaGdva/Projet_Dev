@@ -7,11 +7,6 @@
 
 
 <html>
-    <head>
-        <title>Food Order Website - Home Page</title>
-
-        <link rel="stylesheet" href="../css/index.css">
-    </head>
     
     <body>
         <div class="menu text-center">

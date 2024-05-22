@@ -23,7 +23,6 @@
            <div class="menu text-right">
     <ul>
         <li><a href="index.php">Accueil</a></li>
-        <li><a href="restaurant.php">Restaurants</a></li>
         <li><a href="login.php">Login</a></li> 
     </ul>
 </div>

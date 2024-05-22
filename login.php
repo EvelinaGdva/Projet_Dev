@@ -1,16 +1,8 @@
 <?php
-session_start();
-
-if (isset($_SESSION["user"])) {
-   header("Location: index.php");
-   exit; 
-}
-
 require_once "Data/database.php";
 
 $username = "";
 $email = "";
-$role = "";
 $restaurant_name = "";
 
 if (isset($_POST["login"])) {
@@ -39,7 +31,7 @@ if (isset($_POST["login"])) {
         $predefined_password = md5("admin"); 
         if ($email === $predefined_email && md5($password) === $predefined_password) {
             $_SESSION["user"] = "admin";
-            header("Location: admin_dashboard.php");
+            header("Location: index.php");
             exit;
         } else {
             echo "<div class='alert alert-danger'>Identifiants administrateur incorrects.</div>";
@@ -55,9 +47,9 @@ if (isset($_POST["login"])) {
         if (password_verify($password, $user["password"])) {
             $_SESSION["user"] = $user["id"];
             if ($role == "user") {
-                header("Location: user_dashboard.php");
+                header("Location: userProfil.php");
             } elseif ($role == "restaurant") {
-                header("Location: restaurant_dashboard.php");
+                header("Location: restaurant.php");
             }
             exit;
         } else {
@@ -68,6 +60,7 @@ if (isset($_POST["login"])) {
     }
 }
 ?>
+
 <form action="login.php" method="post">
     <link rel="stylesheet" href="CSS/index.css">
     <div class="login"> 
