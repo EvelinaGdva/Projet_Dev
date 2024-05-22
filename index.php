@@ -19,7 +19,6 @@
 
 <section class="categories">
     <div class="container">
-        <h2 class="text-center">Explore Foods</h2>
 
         <?php 
             $sql = "SELECT * FROM category";
@@ -49,9 +48,7 @@
 </section>
 
 
-<section class="food-menu">
-    <div class="container">
-        <h2 class="text-center">Food Menu</h2>
+
 
         <?php 
             $sql = "SELECT * FROM category";
@@ -73,7 +70,7 @@
                     if($image == "") {
                         echo "<div class='error'>Image not available.</div>";
                     } else {
-                        echo "<img src='images/food/food.jpg' alt='Pizza' class='img-responsive img-curve'>";
+                        echo "<img src='Images/food/food.jpg' alt='Pizza' class='img-responsive img-curve'>";
                     }
                     echo "</div>";
                     echo "<div class='food-menu-desc'>";
@@ -92,8 +89,4 @@
         <div class="clearfix"></div>
     </div>
 
-    
-    <p class="text-center">
-        <a href="food.php" class="btn btn-primary">Voir tous les plats</a>
-    </p>
 </section>

@@ -28,28 +28,7 @@
             }
         ?>
 
-        <h2 class="text-center">Add Food</h2>
-        <form action="food.php" method="POST" enctype="multipart/form-data">
-            <table class="tbl-30">
-                <tr>
-                    <td>Nom du plat:</td>
-                    <td><input type="text" name="food_name" placeholder="Nom du plat"></td>
-                </tr>
-                <tr>
-                    <td>Description:</td>
-                    <td><textarea name="food_description" cols="30" rows="5" placeholder="Description du plat"></textarea></td>
-                </tr>
-                <tr>
-                    <td>Prix:</td>
-                    <td><input type="number" name="food_price"></td>
-                </tr>
-                <tr>
-                    <td>Image:</td>
-                    <td><input type="file" name="image"></td>
-                </tr>
-                <tr>
-                    <td>Catégorie:</td>
-                    <td>
+
                         <select name="category">
                             <?php                                 
                                 $sql = "SELECT * FROM category";
@@ -66,38 +45,29 @@
                         </select>
                     </td>
                 </tr>
-                <tr>
-                    <td colspan="2"><input type="submit" name="submit" value="Ajouter le plat" class="btn-secondary"></td>
-                </tr>
             </table>
         </form>
     </div>
 </section>
 
 <?php 
-            // Vérifier si l'ajout du plat a été soumis
             if(isset($_POST['submit'])) {
-                // Récupérer les informations du formulaire
                 $food_name = $_POST['food_name'];
                 $food_description = $_POST['food_description'];
                 $food_price = $_POST['food_price'];
                 $category = $_POST['category'];
 
-                // Traiter le téléchargement de l'image
                 $image = $_FILES['image'];
                 $image_name = $image['name'];
                 $target_directory = "images/food/";
                 $target_file = $target_directory . basename($image_name);
 
-                // Si l'image est téléchargée avec succès, procéder à l'insertion dans la base de données
                 if(move_uploaded_file($image['tmp_name'], $target_file)) {
                     require_once "Data/database.php";
 
-                    // Requête d'insertion dans la base de données
                     $sql = "INSERT INTO food (food_name, food_description, food_price, image, id_category) 
                             VALUES ('$food_name', '$food_description', '$food_price', '$image_name', '$category')";
 
-                    // Exécuter la requête d'insertion
                     if(mysqli_query($conn, $sql)) {
                         echo "<div class='success'>Le plat a été ajouté avec succès.</div>";
                     } else {
@@ -108,13 +78,10 @@
                 }
             }
 
-            // Sélectionner tous les plats de la base de données
             $sql = "SELECT * FROM food";
             $res = mysqli_query($conn, $sql);
 
-            // Vérifier s'il y a des plats à afficher
             if(mysqli_num_rows($res) > 0) {
-                // Afficher chaque plat
                 while($row = mysqli_fetch_assoc($res)) {
                     echo "<div class='food-menu-box'>";
                     echo "<div class='food-menu-img'>";
