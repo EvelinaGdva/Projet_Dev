@@ -1,14 +1,14 @@
 <?php
-define("SITEURL", "http://localhost:3306");
+
+define("SITEURL", "http://localhost:8888");
 
 $host = "localhost"; 
 $db_username = "root";
 $db_password = "root";
-$database = "Evelicious_munch";
+$database = "evelicious_munch";
+$port = 8888;
 
-//$conn = new mysqli($host, $db_username, $db_password, $database);
-$conn = new mysqli('localhost', 'root', 'root', 'Evelicious_munc...');
-
+$conn = new mysqli($host, $db_username, $db_password, $database, $port);
 
 if ($conn->connect_error) {
     die("Échec de la connexion à la base de données : " . $conn->connect_error);
@@ -19,11 +19,5 @@ if (!$conn->set_charset("utf8mb4")) {
     exit();
 }
 
-try {
-    $mysqli = new mysqli('localhost', 'root', 'root', 'Evelicious_munc');
-} catch (mysqli_sql_exception $e) {
-    echo "Erreur de connexion : " . $e->getMessage();
-    exit();
-}
 
 
