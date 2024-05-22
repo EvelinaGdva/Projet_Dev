@@ -1,12 +1,15 @@
 <?php
-session_start();
 
-if (isset($_SESSION["user"])) {
-   header("Location: index.php");
-   exit; 
-}
 
 require_once "Data/database.php";
+
+$host = "localhost"; 
+$db_username = "root";
+$db_password = "root";
+$database = "evelicious_munch";
+$port = 8888;
+
+$conn = new mysqli($host, $db_username, $db_password, $database, $port);
 
 $username = "";
 $email = "";
@@ -24,7 +27,6 @@ if (isset($_POST["login"])) {
         $restaurant_name = isset($_POST["restaurant_name"]) ? $_POST["restaurant_name"] : "";
     }
 
-    $conn = new mysqli($host, $db_username, $db_password, $database);
 
     if ($role == "user") {
         $sql = "SELECT id, password FROM user WHERE username = ? AND role = ?";
