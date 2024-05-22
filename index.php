@@ -19,7 +19,6 @@
 
 <section class="categories">
     <div class="container">
-
         <?php 
             $sql = "SELECT * FROM category";
             $res = mysqli_query($conn, $sql);
@@ -42,14 +41,58 @@
                 }
             }
         ?>
+        <div class="clearfix"></div>
+    </div>
+</section>
+
+<section class="restaurants">
+    <div class="container">
+        <h2 class="text-center">Restaurants</h2>
+        
+        <?php 
+            // Nouvelle requête SQL pour récupérer les restaurants
+            $restaurant = "SELECT * FROM restaurant";
+            $res_restaurants = mysqli_query($conn, $restaurant);
+            $count_restaurants = mysqli_num_rows($res_restaurants);
+
+            if($count_restaurants > 0)
+            {
+                while($row = mysqli_fetch_assoc($res_restaurants))
+                {
+                    $restaurant_id = $row['id'];
+                    $restaurant_name = $row['name'];
+                    $restaurant_description = $row['description'];
+                    $restaurant_image = $row['image'];
+                    
+                    echo "<div class='restaurant-box'>";
+                    echo "<div class='restaurant-img'>";
+                    if($restaurant_image == "") {
+                        echo "<div class='error'>Image not available.</div>";
+                    } else {
+                        echo "<img src='images/restaurants/$restaurant_image' alt='$restaurant_name' class='img-responsive img-curve'>";
+                    }
+                    echo "</div>";
+                    echo "<div class='restaurant-desc'>";
+                    echo "<h4>$restaurant_name</h4>";
+                    echo "<p class='restaurant-detail'>$restaurant_description</p>";
+                    echo "<br>";
+                    echo "<a href='restaurant.php?id=$restaurant_id' class='btn btn-primary'>View Details</a>";
+                    echo "</div>";
+                    echo "</div>";
+                }
+            }
+            else
+            {
+                echo "<div class='error'>No restaurants found.</div>";
+            }
+        ?>
 
         <div class="clearfix"></div>
     </div>
 </section>
 
-
-
-
+<section class="food-menu">
+    <div class="container">
         <?php 
             $sql = "SELECT * FROM category";
             $res = mysqli_query($conn, $sql);
@@ -84,7 +127,6 @@
                 }
             }
         ?>
-       
-
         <div class="clearfix"></div>
     </div>
+</section>
