@@ -5,13 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestion du restaurant</title>
     <link rel="stylesheet" href="CSS/gestion_restaurateur.css">
+    <script>
+        function confirmDeletion(id) {
+            if (confirm("Êtes-vous sûr de vouloir supprimer ce plat ?")) {
+                window.location.href = 'Controller/delete_food.php?id=' + id;
+            }
+        }
+    </script>
 </head>
 <body>
 
 <div class="container">
     <h1>Gestion du restaurant</h1>
     <?php
-    // Connexion à la base de données (à remplacer par vos propres informations de connexion)
+    // Connexion à la base de données
     $host = "localhost"; 
     $db_username = "root";
     $db_password = "root";
@@ -50,8 +57,8 @@
             echo "<p>Description: " . $row_plat["food_description"] . "</p>";
             echo "<p>Prix: " . $row_plat["food_price"] . "</p>";
             echo "<div class='buttons'>";
-            echo "<a href='modifier_plat.php?id=" . $row_plat["id"] . "' class='btn-edit'>Modifier</a>";
-            echo "<a href='supprimer_plat.php?id=" . $row_plat["id"] . "' class='btn-delete'>Supprimer</a>";
+            echo "<a href='Controller/update_food.php?id=" . $row_plat["id"] . "' class='btn-edit'>Modifier</a>";
+            echo "<a href='#' onclick='confirmDeletion(" . $row_plat["id"] . ")' class='btn-delete'>Supprimer</a>";
             echo "</div>";
             echo "</div>";
         }
