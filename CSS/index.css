@@ -91,7 +91,7 @@ fieldset{
 }
 
 
-/* CSSS for navbar section */
+/* CSSS navbar  */
 
 .logo{
   width: 15%;
@@ -99,6 +99,7 @@ fieldset{
 }
 .menu{
   line-height: 70px;
+  margin-top: 20px;
 }
 .menu ul{
   list-style-type: none;

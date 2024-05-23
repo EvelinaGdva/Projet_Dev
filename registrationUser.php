@@ -27,6 +27,7 @@ if (isset($_SESSION["user"])) {
             $username = $_POST["username"];
             $password = $_POST["password"];
             $confirm_password = $_POST["confirm_password"];
+            $email = $_POST["email"]; // Ajout de cette ligne pour récupérer l'email
 
             if ($password !== $confirm_password) {
                 echo "<div class='alert alert-danger'>Les mots de passe ne correspondent pas.</div>";
@@ -43,15 +44,17 @@ if (isset($_SESSION["user"])) {
                 if ($result_check->num_rows > 0) {
                     echo "<div class='alert alert-danger'>Le nom d'utilisateur est déjà pris.</div>";
                 } else {
-                    // Insérer le nouvel utilisateur
                     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-                    $sql_insert = "INSERT INTO user (username, password) VALUES (?, ?)";
+                    $sql_insert = "INSERT INTO user (username, password, email) VALUES (?, ?, ?)";
                     $stmt_insert = $conn->prepare($sql_insert);
-                    $stmt_insert->bind_param("ss", $username, $hashed_password);
+                    $stmt_insert->bind_param("sss", $username, $hashed_password, $email); // Modification de cette ligne pour inclure l'email
                     $stmt_insert->execute();
 
                     if ($stmt_insert->affected_rows > 0) {
-                        echo "<div class='alert alert-success'>Votre compte a été créé avec succès. <a href='login.php'>Connectez-vous maintenant</a>.</div>";
+                        echo "<div class='alert alert-success'>Votre compte a été créé avec succès. Redirection vers <a href='login.php'>la page de connexion</a>...</div>";
+                        // Redirection vers la page de connexion après 2 secondes
+                        header("refresh:2; url=loginUser.php");
+                        exit();
                     } else {
                         echo "<div class='alert alert-danger'>Une erreur est survenue lors de la création de votre compte. Veuillez réessayer.</div>";
                     }
@@ -60,7 +63,7 @@ if (isset($_SESSION["user"])) {
         }
         ?>
 
-        <form action="registration.php" method="post">
+        <form action="registrationUser.php" method="post">
             <div class="login"> 
                 <h2>INSCRIPTION</h2><br>
                 <div class="form-group">
@@ -72,6 +75,9 @@ if (isset($_SESSION["user"])) {
                 <div class="form-group">
                     <input type="password" placeholder="Confirmez votre mot de passe :" name="confirm_password" class="form-control" required>
                 </div>
+                <div class="form-group">
+                    <input type="email" placeholder="Entrez votre email :" name="email" class="form-control" required>
+                </div>
                 <div class="form-btn">
                     <input type="submit" value="Inscription" name="register" class="btn btn-primary">
                 </div>
@@ -79,4 +85,5 @@ if (isset($_SESSION["user"])) {
         </form>
     </div>
 </body>
+
 </html>
