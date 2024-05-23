@@ -13,7 +13,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-4">
-                <a href="restaurants.php">
+                <a href="restaurant.php">
                     <img src="Images/restaurant.png" alt="Restaurants" class="img-responsive img-curve">
                     <h3>Restaurants</h3>
                 </a>

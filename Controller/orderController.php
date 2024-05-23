@@ -6,119 +6,89 @@
 
         <br /><br /><br />
 
-        <?php 
-            if(isset($_SESSION['update']))
+        <?php
+        function modifier($image, $nom, $prix, $desc, $id)
+        {
+            if(require("Data/database.php")) 
             {
-                echo $_SESSION['update'];
-                unset($_SESSION['update']);
+                $req = $conn->prepare("UPDATE produits SET `image` = ?, nom = ?, prix = ?, description = ? WHERE id=?"); // Correction: Utilisation de $conn au lieu de $access
+
+                $req->execute(array($image, $nom, $prix, $desc, $id));
+
+                $req->closeCursor();
             }
-        ?>
-        <br><br>
+        }
 
-        <table class="tbl-full">
-            <tr>
-                <th>S.N.</th>
-                <th>Restaurant</th>
-                <th>User</th>
-                <th>Food</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Total</th>
-                <th>Order Date</th>
-                <th>Status</th>
-            </tr>
-
-            <?php 
-            require_once "Data/database.php";
-            $sql = "SELECT * FROM order ORDER BY id DESC"; 
-
-            $res = mysqli_query($conn, $sql);
-            $count = mysqli_num_rows($res);
-
-            $sn = 1; 
-            if($count > 0)
+        function afficherUnProduit($id)
+        {
+            if(require("Data/database.php")) 
             {
-                while($row = mysqli_fetch_assoc($res))
+                $req = $access->prepare("SELECT * FROM produits WHERE id=?");
+
+                $req->execute(array($id));
+
+                $data = $req->fetchAll(PDO::FETCH_OBJ);
+
+                $req->closeCursor();
+
+                return $data;
+            }
+        }
+
+        function ajouter($image, $nom, $prix, $desc)
+        {
+            if(require("Data/database.php"))             {
+                $req = $access->prepare("INSERT INTO produits (image, nom, prix, description) VALUES (?, ?, ?, ?)");
+
+                $req->execute(array($image, $nom, $prix, $desc));
+
+                $req->closeCursor();
+            }
+        }
+
+        function afficher()
+        {
+            if(require("Data/database.php"))             {
+                $req = $access->prepare("SELECT * FROM produits ORDER BY id DESC");
+
+                $req->execute();
+
+                $data = $req->fetchAll(PDO::FETCH_OBJ);
+
+                $req->closeCursor();
+
+                return $data;
+            }
+        }
+
+        function supprimer($id)
+        {
+            if(require("Data/database.php"))             {
+                $req = $access->prepare("DELETE FROM produits WHERE id=?");
+
+                $req->execute(array($id));
+
+                $req->closeCursor();
+            }
+        }
+
+        function getAdmin($email, $password)
+        {
+            if(require("Data/database.php"))             {
+                $req = $access->prepare("SELECT * FROM admin WHERE email = ? AND motdepasse = ?"); // Correction: Requête pour récupérer l'admin par email et mot de passe
+
+                $req->execute(array($email, $password));
+
+                $data = $req->fetchAll(PDO::FETCH_OBJ);
+
+                if($req->rowCount() == 1)
                 {
-                    $id = $row['id'];
-                    $id_restaurant = $row ['id_restaurant'];
-                    $id_user = $row ['id_user'];
-                    $food_name = $row['food'];
-                    $price_of_order = $row['price'];
-                    $quantity = $row['quantity'];
-                    $total = $row['total'];
-                    $order_date = $row['order_date'];
-                    $status = $row['status'];
-
-                    echo "<tr>";
-                    echo "<td>{$sn}. </td>";
-                    echo "<td>{$id_restaurant}</td>";
-                    echo "<td>{$id_user}</td>";
-                    echo "<td>{$food_name}</td>";
-                    echo "<td>{$price_of_order}</td>";
-                    echo "<td>{$quantity}</td>";
-                    echo "<td>{$total}</td>";
-                    echo "<td>{$order_date}</td>";
-                    echo "<td>";
-                    if($status == "Ordered")
-                    {
-                        echo "<label>{$status}</label>";
-                    }
-                    elseif($status == "On Delivery")
-                    {
-                        echo "<label style='color: orange;'>{$status}</label>";
-                    }
-                    elseif($status == "Delivered")
-                    {
-                        echo "<label style='color: green;'>{$status}</label>";
-                    }
-                    elseif($status == "Cancelled")
-                    {
-                        echo "<label style='color: red;'>{$status}</label>";
-                    }
-                    echo "</td>";
-                    echo "</tr>";
-                    $sn++;
+                    return $data;
                 }
-            } 
-            else
-            {
-                echo "<tr><td colspan='9'>No orders found.</td></tr>";
+                else
+                {
+                    return false;
+                }
             }
-            ?>
-        </table>
-
-        <h2 class="text-center">Passer une commande</h2>
-        <form action="process-order.php" method="POST">
-            <table class="tbl-30">
-                <tr>
-                    <td>Nom du plat:</td>
-                    <td><input type="text" name="food_name" placeholder="Nom du plat"></td>
-                </tr>
-                <tr>
-                    <td>Prix:</td>
-                    <td><input type="number" name="food_price"></td>
-                </tr>
-                <tr>
-                    <td>Quantité:</td>
-                    <td><input type="number" name="quantity"></td>
-                </tr>
-                <tr>
-    <td>Utilisateur:</td>
-    <td><input type="text" name="user" placeholder="Nom de l'utilisateur"></td>
-</tr>
-<tr>
-    <td>Restaurant:</td>
-    <td>
-        <select name="restaurant">
-            <option value="1">Restaurant 1</option>
-            <option value="2">Restaurant 2</option>
-        </select>
-    </td>
-</tr>                <tr>
-                    <td colspan="2"><input type="submit" name="submit" value="Passer la commande" class="btn-secondary"></td>
-                </tr>
-            </table>
-        </form>
-    </div>
-</div>
+        }
+        ?>
