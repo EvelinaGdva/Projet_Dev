@@ -7,59 +7,66 @@
     <link rel="stylesheet" href="CSS/delivery.css">
 </head>
 <body>
+    <div class="menu-container">
+        <?php
+        include 'menu-front/menu.php';
+        ?>
+    </div>
+    <div class="content-container">
+        <?php
+        include 'Data/database.php';
 
-<div class="container">
-    <h1>Suivi de Livraisons</h1>
-    <?php
-    include 'Data/database.php';
+        session_start();
 
-    function getCurrentDeliveries($conn) {
-        $sql = "SELECT * FROM delivery WHERE delivery_date = CURDATE() AND delivery_time >= CURTIME()";
-        $result = $conn->query($sql);
-        if ($result->num_rows > 0) {
+        // Fonction pour récupérer les livraisons en cours
+        function getCurrentDeliveries($conn) {
+            $sql = "SELECT * FROM delivery WHERE delivery_date = CURDATE() AND delivery_time >= CURTIME()";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->get_result();
             return $result->fetch_all(MYSQLI_ASSOC);
-        } else {
-            return array();
         }
-    }
 
-    function getDeliveryHistory($conn) {
-        $sql = "SELECT * FROM delivery WHERE delivery_date < CURDATE() OR (delivery_date = CURDATE() AND delivery_time < CURTIME())";
-        $result = $conn->query($sql);
-        if ($result->num_rows > 0) {
+        // Fonction pour récupérer l'historique des livraisons
+        function getDeliveryHistory($conn) {
+            $sql = "SELECT * FROM delivery WHERE delivery_date < CURDATE() OR (delivery_date = CURDATE() AND delivery_time < CURTIME())";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->get_result();
             return $result->fetch_all(MYSQLI_ASSOC);
-        } else {
-            return array();
         }
-    }
 
-    $currentDeliveries = getCurrentDeliveries($conn);
-    echo "<h2>Livraisons en cours</h2>";
-    if (!empty($currentDeliveries)) {
-        echo "<ul>";
-        foreach ($currentDeliveries as $delivery) {
-            echo "<li>Livraison #" . $delivery['id'] . ", Commande #" . $delivery['id_order'] . ", Date: " . $delivery['delivery_date'] . ", Heure: " . $delivery['delivery_time'] . "</li>";
-        }
-        echo "</ul>";
-    } else {
-        echo "Aucune livraison en cours.";
-    }
+        $currentDeliveries = getCurrentDeliveries($conn);
+        $deliveryHistory = getDeliveryHistory($conn);
+        ?>
+        
+        <h2>Livraisons en cours</h2>
+        <?php if (!empty($currentDeliveries)) : ?>
+            <ul>
+                <?php foreach ($currentDeliveries as $delivery) : ?>
+                    <li>
+                        Livraison #<?php echo htmlspecialchars($delivery['id']); ?>, Commande #<?php echo htmlspecialchars($delivery['id_order']); ?>, Date: <?php echo htmlspecialchars($delivery['delivery_date']); ?>, Heure: <?php echo htmlspecialchars($delivery['delivery_time']); ?>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        <?php else : ?>
+            <p class="no-deliveries">Aucune livraison en cours.</p>
+        <?php endif; ?>
 
-    $deliveryHistory = getDeliveryHistory($conn);
-    echo "<h2>Historique des livraisons</h2>";
-    if (!empty($deliveryHistory)) {
-        echo "<ul>";
-        foreach ($deliveryHistory as $delivery) {
-            echo "<li>Livraison #" . $delivery['id'] . ", Commande #" . $delivery['id_order'] . ", Date: " . $delivery['delivery_date'] . ", Heure: " . $delivery['delivery_time'] . "</li>";
-        }
-        echo "</ul>";
-    } else {
-        echo "Aucune livraison dans l'historique.";
-    }
+        <h2>Historique des livraisons</h2>
+        <?php if (!empty($deliveryHistory)) : ?>
+            <ul>
+                <?php foreach ($deliveryHistory as $delivery) : ?>
+                    <li>
+                        Livraison #<?php echo htmlspecialchars($delivery['id']); ?>, Commande #<?php echo htmlspecialchars($delivery['id_order']); ?>, Date: <?php echo htmlspecialchars($delivery['delivery_date']); ?>, Heure: <?php echo htmlspecialchars($delivery['delivery_time']); ?>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        <?php else : ?>
+            <p class="no-deliveries">Aucune livraison dans l'historique.</p>
+        <?php endif; ?>
 
-    $conn->close();
-    ?>
-</div>
-
+        <?php $conn->close(); ?>
+    </div>
 </body>
 </html>

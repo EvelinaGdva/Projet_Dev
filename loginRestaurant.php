@@ -1,64 +1,75 @@
 <?php
-include 'Data/database.php';
 
-$error = '';
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $restaurant_name = $_POST['restaurant_name'];
-    $email = $_POST['email'];
-    $password = $_POST['password'];
+require_once "Data/database.php";
 
-    // Préparer et exécuter la requête SQL
-    $stmt = $conn->prepare("SELECT * FROM restaurant WHERE restaurant_name = ? AND email = ?");
-    $stmt->bind_param("ss", $restaurant_name, $email);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $restaurant = $result->fetch_assoc();
+$email = "";
+$password = "";
 
-    // Vérifier si le restaurant existe et si le mot de passe est correct
-    if ($restaurant && password_verify($password, $restaurant['password'])) {
-        session_start();
-        $_SESSION['restaurant_id'] = $restaurant['id'];
-        $_SESSION['restaurant_name'] = $restaurant['restaurant_name'];
-        header("Location: indexRestaurateur.php");
-        exit();
-    } else {
-        $error = "Nom du restaurant, email ou mot de passe incorrect.";
+if (isset($_POST["login"])) {
+    $email = isset($_POST["email"]) ? $_POST["email"] : "";
+    $password = isset($_POST["password"]) ? $_POST["password"] : "";
+
+    $errors = [];
+
+    if (empty($email) || empty($password)) {
+        $errors[] = "Tous les champs sont obligatoires.";
     }
 
-    $stmt->close();
+    if (empty($errors)) {
+        $host = "localhost";
+        $db_username = "root";
+        $db_password = "root";
+        $database = "Evelicious_munch";
+        $port = 8887;
+
+        $conn = new mysqli($host, $db_username, $db_password, $database, $port);
+
+        if ($conn->connect_error) {
+            die("Erreur de connexion: " . $conn->connect_error);
+        }
+
+        $sql_check_restaurant = "SELECT id, password FROM restaurant WHERE email = ?";
+        $stmt_check_restaurant = $conn->prepare($sql_check_restaurant);
+        $stmt_check_restaurant->bind_param("s", $email);
+        $stmt_check_restaurant->execute();
+        $result_check_restaurant = $stmt_check_restaurant->get_result();
+
+        if ($result_check_restaurant->num_rows > 0) {
+            $row = $result_check_restaurant->fetch_assoc();
+            $hashed_password = $row['password'];
+
+            if (password_verify($password, $hashed_password)) {
+                header("Location: restaurantController.php");
+                exit(); 
+            } else {
+                echo "<div class='alert alert-danger'>Email ou mot de passe incorrect.</div>";
+            }
+        } else {
+            echo "<div class='alert alert-danger'>Email ou mot de passe incorrect.</div>";
+        }
+    } else {
+        foreach ($errors as $error) {
+            echo "<div class='alert alert-danger'>$error</div>";
+        }
+    }
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion Restaurateur</title>
+<form action="#login" method="post" id="login">
     <link rel="stylesheet" href="CSS/index.css">
-</head>
-<body>
-    <div class="login-container">
-        <h2>Connexion Restaurateur</h2>
-        <?php if ($error): ?>
-            <p class="error"><?php echo $error; ?></p>
-        <?php endif; ?>
-        <form method="post" action="loginRestaurant.php">
-            <div class="form-group">
-                <label for="restaurant_name">Nom du restaurant:</label>
-                <input type="text" id="restaurant_name" name="restaurant_name" required>
-            </div>
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Mot de passe:</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <button type="submit">Se connecter</button>
-            <p>Vous n'avez pas de compte ? <a href="registrationRestaurant.php">Inscrivez-vous ici</a>.</p>
-        </form>
+    <div class="login"> 
+        <h2>Connexion Restaurateur</h2><br>
+        <div class="form-group" id="email-field">
+            <input type="email" placeholder="Email" name="email" class="form-control" value="<?php echo $email; ?>" required>
+        </div>
+        <div class="form-group">
+            <input type="password" placeholder="Mot de passe" name="password" class="form-control" required>
+        </div>
+        <div class="form-btn">
+            <input type="submit" value="Connexion" name="login" class="btn btn-primary">
+        </div>
+        <div class="form-link">
+            <a href="registrationRestaurant.php">Inscrivez-vous ici</a>
+        </div>
     </div>
-</body>
-</html>
+</form>

@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Votre titre</title>
-    <link rel="stylesheet" href="order.css">
+    <title>Order</title>
+    <link rel="stylesheet" href="CSS/order.css">
 </head>
 <body>
     <?php
@@ -16,7 +16,7 @@
 
     // Fonction pour récupérer le panier actuel de l'utilisateur
     function getCurrentCart($conn, $userId) {
-        $sql = "SELECT * FROM `order` WHERE id_user = ? AND status = 'pending'";
+        $sql = "SELECT id, id_user, id_restaurant, id_food, order_date, order_time, price_of_order, total, status FROM `order` WHERE id_user = ? AND status = 'pending'";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("i", $userId);
         $stmt->execute();
@@ -26,7 +26,7 @@
 
     // Fonction pour récupérer les commandes en cours de l'utilisateur
     function getPendingOrders($conn, $userId) {
-        $sql = "SELECT * FROM `order` WHERE id_user = ? AND status = 'pending'";
+        $sql = "SELECT id, id_user, id_restaurant, id_food, order_date, order_time, price_of_order, total, status FROM `order` WHERE id_user = ? AND status = 'pending'";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("i", $userId);
         $stmt->execute();
@@ -36,7 +36,7 @@
 
     // Fonction pour récupérer l'historique des commandes de l'utilisateur
     function getOrderHistory($conn, $userId) {
-        $sql = "SELECT * FROM `order` WHERE id_user = ? AND status = 'completed'";
+        $sql = "SELECT id, id_user, id_restaurant, id_food, order_date, order_time, price_of_order, total, status FROM `order` WHERE id_user = ? AND status = 'completed'";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("i", $userId);
         $stmt->execute();
@@ -54,15 +54,16 @@
     $orderHistory = getOrderHistory($conn, $userId);
 
     // Affichage du panier actuel de l'utilisateur
+    echo "<div class='container'>";
     echo "<h2>Votre Panier Actuel</h2>";
     if (!empty($currentCart)) {
         echo "<ul>";
         foreach ($currentCart as $item) {
-            echo "<li>Produit #" . $item['id_food'] . ", Prix: " . $item['price_of_order'] . "</li>";
+            echo "<li>Produit #" . htmlspecialchars($item['id_food']) . ", Prix: " . htmlspecialchars($item['price_of_order']) . "</li>";
         }
         echo "</ul>";
     } else {
-        echo "Votre panier est vide.";
+        echo "<p class='no-orders'>Votre panier est vide.</p>";
     }
 
     // Affichage des commandes en cours de l'utilisateur
@@ -70,11 +71,11 @@
     if (!empty($pendingOrders)) {
         echo "<ul>";
         foreach ($pendingOrders as $order) {
-            echo "<li>Commande #" . $order['id'] . ", Date: " . $order['order_date'] . ", Heure: " . $order['order_time'] . "</li>";
+            echo "<li>Commande #" . htmlspecialchars($order['id']) . ", Date: " . htmlspecialchars($order['order_date']) . ", Heure: " . htmlspecialchars($order['order_time']) . "</li>";
         }
         echo "</ul>";
     } else {
-        echo "Aucune commande en cours.";
+        echo "<p class='no-orders'>Aucune commande en cours.</p>";
     }
 
     // Affichage de l'historique des commandes de l'utilisateur
@@ -82,14 +83,14 @@
     if (!empty($orderHistory)) {
         echo "<ul>";
         foreach ($orderHistory as $order) {
-            echo "<li>Commande #" . $order['id'] . ", Date: " . $order['order_date'] . ", Heure: " . $order['order_time'] . "</li>";
+            echo "<li>Commande #" . htmlspecialchars($order['id']) . ", Date: " . htmlspecialchars($order['order_date']) . ", Heure: " . htmlspecialchars($order['order_time']) . "</li>";
         }
         echo "</ul>";
     } else {
-        echo "Aucune commande dans l'historique.";
+        echo "<p class='no-orders'>Aucune commande dans l'historique.</p>";
     }
 
-    // Fermeture de la connexion à la base de données
+    echo "</div>";
     $conn->close();
     ?>
 </body>

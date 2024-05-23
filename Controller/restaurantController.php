@@ -19,7 +19,6 @@
 
     $conn = new mysqli($host, $db_username, $db_password, $database, $port);
 
-    // Vérifier la connexion
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }
@@ -36,9 +35,7 @@
     $sql_plats = "SELECT * FROM food";
     $result_plats = $conn->query($sql_plats);
 
-    // Vérifier s'il y a des plats
     if ($result_plats->num_rows > 0) {
-        // Afficher les plats
         echo "<h2>Plats ajoutés</h2>";
         while($row_plat = $result_plats->fetch_assoc()) {
             echo "<div class='plat'>";
@@ -58,7 +55,7 @@
 
     $conn->close();
     ?>
-    <a href="index_restaurateur.php" class="btn-add">Ajouter d'autres plats</a>
+    <a href="indexRestaurateur.php" class="btn-add">Ajouter d'autres plats</a>
 </div>
 
 </body>
