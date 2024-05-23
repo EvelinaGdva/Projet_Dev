@@ -42,7 +42,7 @@ if (isset($_POST["login"])) {
 
             // Vérification du mot de passe
             if (password_verify($password, $hashed_password)) {
-                header("Location: index_restaurateur.php");
+                header("Location: gestion_restaurateur.php");
                 exit(); // Assure que le script s'arrête après la redirection
             } else {
                 echo "<div class='alert alert-danger'>Email ou mot de passe incorrect.</div>";

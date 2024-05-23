@@ -10,7 +10,7 @@
 
 <div class="container">
     <h1>Gestion des plats</h1>
-    <form action="actions.php" method="post" enctype="multipart/form-data">
+    <form action="actions_restaurateur.php" method="post" enctype="multipart/form-data">
         <label for="food_name">Nom du plat:</label><br>
         <input type="text" id="food_name" name="food_name" required><br><br>
         
@@ -25,14 +25,15 @@
         
         <input type="submit" value="Ajouter">
     </form>
+    <a href="gestion_restaurateur.php" class="btn-view-plats">Voir les plats</a>
 </div>
 
-<div class="plats">
-    <h2>Plats disponibles</h2>
+<div class="food">
 
     <?php
-    // Connexion à la base de données (à remplacer par vos propres informations de connexion)
-    $host = "localhost"; 
+
+    // Connexion à la base de données
+    $host = "localhost";
     $db_username = "root";
     $db_password = "root";
     $database = "evelicious_munch";
@@ -45,28 +46,30 @@
         die("Connection failed: " . $conn->connect_error);
     }
 
-    // Récupérer les plats depuis la base de données
-    $sql = "SELECT * FROM plats";
-    $result = $conn->query($sql);
+    // Traitement du formulaire d'ajout de plat
+    if (isset($_POST["food_name"], $_POST["food_description"], $_POST["food_price"])) {
+        $food_name = $_POST["food_name"];
+        $food_description = $_POST["food_description"];
+        $food_price = $_POST["food_price"];
 
-    // Vérifier s'il y a des résultats
-    if ($result->num_rows > 0) {
-        // Afficher les plats
-        while($row = $result->fetch_assoc()) {
-            echo "<div>";
-            echo "<h3>" . $row["food_name"] . "</h3>";
-            echo "<img src='" . $row["image"] . "' alt='" . $row["food_name"] . "'>";
-            echo "<p>" . $row["food_description"] . "</p>";
-            echo "<p>Prix: " . $row["food_price"] . "</p>";
-            echo "</div>";
+        // Traitement du téléchargement de l'image (vous pouvez ajouter cette partie si nécessaire)
+
+        // Requête SQL pour insérer le plat dans la base de données
+        $sql = "INSERT INTO food (food_name, food_description, food_price) VALUES ('$food_name', '$food_description', '$food_price')";
+
+        if ($conn->query($sql) === TRUE) {
+            // Redirection vers la même page après l'ajout du plat
+            header("Location: gestion_restaurateur.php");
+            exit();
+        } else {
+            echo "Erreur lors de l'ajout du plat: " . $conn->error;
         }
-    } else {
-        echo "Aucun plat trouvé.";
     }
 
     // Fermer la connexion à la base de données
     $conn->close();
     ?>
+
 </div>
 
 </body>
