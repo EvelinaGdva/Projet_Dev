@@ -42,6 +42,7 @@ if (isset($_POST["login"])) {
 
             // Vérification du mot de passe
             if (password_verify($password, $hashed_password)) {
+                $_SESSION['restaurant_id'] = $row['id']; // Stocker l'ID du restaurant dans la session
                 header("Location: gestion_restaurateur.php");
                 exit(); // Assure que le script s'arrête après la redirection
             } else {

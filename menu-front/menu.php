@@ -24,6 +24,7 @@
     <ul>
         <li><a href="login_restaurateur.php">Espace Restaurateurs</a></li>
         <li><a href="login_user.php">Espace Utilisateurs</a></li> 
+        <li><a href="login_admin.php">Espace Admin</a></li> 
     </ul>
 </div>
 
