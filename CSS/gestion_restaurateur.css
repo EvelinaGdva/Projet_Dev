@@ -1,0 +1,77 @@
+/* Style général */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+    padding: 20px;
+}
+
+h1, h2, h3 {
+    color: #333;
+}
+
+/* Style des plats */
+.plat {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.plat h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.plat img {
+    max-width: 150px; /* Vous pouvez ajuster la taille maximale selon vos besoins */
+    height: auto; /* Cette propriété garantit que les proportions de l'image sont respectées */
+}
+
+
+.plat p {
+    margin: 0;
+    margin-bottom: 10px;
+}
+
+/* Boutons */
+.buttons {
+    margin-top: 10px;
+}
+
+.btn-edit, .btn-delete {
+    display: inline-block;
+    padding: 5px 10px;
+    margin-right: 10px;
+    text-decoration: none;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.btn-edit:hover, .btn-delete:hover {
+    background-color: #0056b3;
+}
+
+.btn-add {
+    display: block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    color: #fff;
+    background-color: #28a745;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.btn-add:hover {
+    background-color: #218838;
+}

@@ -1,6 +1,5 @@
 <?php
-
-
+session_start();
 require_once "Data/database.php";
 
 $host = "localhost"; 
@@ -11,22 +10,25 @@ $port = 8888;
 
 $conn = new mysqli($host, $db_username, $db_password, $database, $port);
 
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
 $username = "";
 $email = "";
 $role = "";
 $restaurant_name = "";
 
 if (isset($_POST["login"])) {
-    $username = isset($_POST["username"]) ? $_POST["username"] : "";
-    $email = isset($_POST["email"]) ? $_POST["email"] : "";
+    $username = isset($_POST["username"]) ? htmlspecialchars($_POST["username"]) : "";
+    $email = isset($_POST["email"]) ? htmlspecialchars($_POST["email"]) : "";
     $password = isset($_POST["password"]) ? $_POST["password"] : "";
-    $role = isset($_POST["role"]) ? $_POST["role"] : "";
+    $role = isset($_POST["role"]) ? htmlspecialchars($_POST["role"]) : "";
 
     // Set restaurant_name only if the role is 'restaurant'
     if ($role == "restaurant") {
-        $restaurant_name = isset($_POST["restaurant_name"]) ? $_POST["restaurant_name"] : "";
+        $restaurant_name = isset($_POST["restaurant_name"]) ? htmlspecialchars($_POST["restaurant_name"]) : "";
     }
-
 
     if ($role == "user") {
         $sql = "SELECT id, password FROM user WHERE username = ? AND role = ?";
@@ -99,9 +101,9 @@ if (isset($_POST["login"])) {
         <div class="form-btn">
             <input type="submit" value="Connexion" name="login" class="btn btn-primary">
             <p>Vous n'avez pas de compte ? <a href="registration.php">Inscrivez-vous ici</a>.</p>
+        </div>
     </div>
 </form>
-
 
 <script>
     document.getElementById('role').addEventListener('change', function() {
@@ -109,18 +111,14 @@ if (isset($_POST["login"])) {
         var usernameField = document.getElementById('username-field');
         var restaurantNameField = document.getElementById('restaurant-name-field');
         var emailField = document.getElementById('email-field');
-        
+
         if (selectedRole === 'user' || selectedRole === 'restaurant') {
             usernameField.style.display = 'block';
-            <?php if ($role == "restaurant"): ?>
-            restaurantNameField.style.display = 'block';
-            <?php endif; ?>
+            if (restaurantNameField) restaurantNameField.style.display = 'block';
             emailField.style.display = 'block';
         } else {
             usernameField.style.display = 'none';
-            <?php if ($role == "restaurant"): ?>
-            restaurantNameField.style.display = 'none';
-            <?php endif; ?>
+            if (restaurantNameField) restaurantNameField.style.display = 'none';
             emailField.style.display = 'block';
         }
     });

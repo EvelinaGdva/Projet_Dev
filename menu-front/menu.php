@@ -22,9 +22,8 @@
             <section class="food-menu">
            <div class="menu text-right">
     <ul>
-        <li><a href="index.php">Accueil</a></li>
-        <li><a href="restaurant.php">Restaurants</a></li>
-        <li><a href="login.php">Login</a></li> 
+        <li><a href="login_restaurateur.php">Espace Restaurateurs</a></li>
+        <li><a href="login_user.php">Espace Utilisateurs</a></li> 
     </ul>
 </div>
 
