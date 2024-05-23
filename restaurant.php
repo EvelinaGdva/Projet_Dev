@@ -1,87 +1,43 @@
-<?php
-session_start();
-
-if (!isset($_SESSION["user"])) {
-    header("Location: login.php");
-    exit;
-}
-
-$user_role = $_SESSION["user_role"];
-if ($user_role != "restaurant" && $user_role != "admin") {
-    header("Location: index.php");
-    exit;
-}
-
-require_once "Data/database.php";
-
-$errors = array();
-
-// Traitement de la suppression du restaurant
-if (isset($_GET['delete_id'])) {
-    $delete_id = $_GET['delete_id'];
-    $sql = "DELETE FROM restaurant WHERE id = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $delete_id);
-    if ($stmt->execute()) {
-        $success_msg = "Le restaurant a été supprimé avec succès.";
-    } else {
-        $errors[] = "Une erreur s'est produite lors de la suppression du restaurant.";
-    }
-}
-
-// Sélection de tous les restaurants
-$sql = "SELECT * FROM restaurant";
-$result = $conn->query($sql);
-
-?>
+<?php include('menu-front/menu.php'); ?>
 
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liste des restaurants</title>
-    <link rel="stylesheet" href="../CSS/index.css">
+    <title>Restaurant</title>
+    <link rel="stylesheet" href="CSS/restaurant.css">
 </head>
 <body>
-    <h2>Liste des restaurants</h2>
+
+<div class="container">
+    <h1>Restaurant</h1>
     <?php
-    if (isset($success_msg)) {
-        echo "<div class='alert alert-success'>$success_msg</div>";
-    }
+    include 'Data/database.php';
 
-    if (!empty($errors)) {
-        foreach ($errors as $error) {
-            echo "<div class='alert alert-danger'>$error</div>";
-        }
-    }
-    ?>
-    <table>
-        <tr>
-            <th>Nom du restaurant</th>
-            <th>Description</th>
-            <th>Adresse</th>
-            <?php if ($user_role == "restaurateur") echo "<th>Action</th>"; ?>
-        </tr>
-        <?php
-        if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                echo "<tr>";
-                echo "<td>" . $row["restaurant_name"] . "</td>";
-                echo "<td>" . $row["description"] . "</td>";
-                echo "<td>" . $row["address"] . "</td>";
-                if ($user_role == "admin") {
-                    echo "<td><a href='restaurant.php?delete_id=" . $row["id"] . "'>Supprimer</a> | <a href='updateRestaurant.php?update_id=" . $row["id"] . "'>Modifier</a></td>";
-                }
-                echo "</tr>";
-            }
+    if (isset($_GET['id'])) {
+        $restaurant_id = $_GET['id'];
+
+        $sql_restaurant_info = "SELECT * FROM restaurant WHERE id = $restaurant_id";
+        $result_restaurant_info = $conn->query($sql_restaurant_info);
+
+        if ($result_restaurant_info->num_rows > 0) {
+            $row_restaurant_info = $result_restaurant_info->fetch_assoc();
+            echo "<h2>Nom du restaurant: " . $row_restaurant_info["restaurant_name"] . "</h2>";
+            echo "<p>Description: " . $row_restaurant_info["description"] . "</p>";
+            echo "<p>Email: " . $row_restaurant_info["email"] . "</p>";
+            echo "<p>Adresse: " . $row_restaurant_info["address"] . "</p>";
+            echo "<img src='images/logos/" . $row_restaurant_info["logo"] . "' alt='" . $row_restaurant_info["restaurant_name"] . "'>";
         } else {
-            echo "<tr><td colspan='4'>Aucun restaurant trouvé.</td></tr>";
+            echo "Informations sur le restaurant non trouvées.";
         }
-        ?>
-    </table>
+    } else {
+        echo "ID du restaurant non spécifié.";
+    }
 
-   
+    $conn->close();
+    ?>
+</div>
 
 </body>
 </html>

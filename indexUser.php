@@ -16,7 +16,7 @@
             <div class="col-md-12">
                 <div class="image-container">
                     <div class="col-md-4">
-                        <a href="restaurant.php">
+                        <a href="restaurants.php">
                             <img src="Images/restaurant.png" alt="Restaurants" class="img-responsive img-curve">
                             <h3>Restaurants</h3>
                         </a>
@@ -24,7 +24,7 @@
                     <div class="col-md-4">
                         <a href="order.php">
                             <img src="Images/order.png" alt="Order" class="img-responsive img-curve">
-                            <h3>Commander</h3>
+                            <h3>Commandes</h3>
                         </a>
                     </div>
                     <div class="col-md-4">

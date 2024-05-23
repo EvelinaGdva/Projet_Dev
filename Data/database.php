@@ -1,10 +1,9 @@
 <?php
-define("SITEURL", "http://localhost:8887");
-
 $host = "localhost"; 
 $db_username = "root";
 $db_password = "root";
 $database = "Evelicious_munch";
+$port = 8887;
 
 $conn = new mysqli($host, $db_username, $db_password, $database);
 
