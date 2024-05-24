@@ -31,7 +31,7 @@ $result = $conn->query($sql);
         <tr>
             <th>Nom</th>
             <th>Description</th>
-            <th>Actions</th> <!-- Ajouter une colonne pour les actions -->
+            <th>Actions</th> 
         </tr>
         <?php
         if ($result->num_rows > 0) {
@@ -49,7 +49,7 @@ $result = $conn->query($sql);
         ?>
     </table>
     <br>
-    <a href="logout.php">Déconnexion</a> <!-- Ajoutez un lien de déconnexion -->
+    <a href="index.php">Déconnexion</a> <!-- Ajoutez un lien de déconnexion -->
 </body>
 </html>
 

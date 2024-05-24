@@ -1,7 +1,7 @@
 <?php
 // Vérifier si l'ID du plat est fourni
 if (isset($_GET['id'])) {
-    $plat_id = $_GET['id'];
+    $food_id = $_GET['id'];
 
     // Connexion à la base de données
     $host = "localhost"; 
@@ -20,11 +20,11 @@ if (isset($_GET['id'])) {
     // Supprimer le plat de la base de données
     $sql = "DELETE FROM food WHERE id = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $plat_id);
+    $stmt->bind_param("i", $food_id);
 
     if ($stmt->execute()) {
         // Redirection vers la page de gestion après la suppression
-        header("Location: ../update_food.php");
+        header("Location: update_food.php");
         exit();
     } else {
         echo "Erreur lors de la suppression du plat: " . $conn->error;
@@ -33,6 +33,6 @@ if (isset($_GET['id'])) {
     $stmt->close();
     $conn->close();
 } else {
-    echo "ID du plat non fourni.";
+    header("Location: update_food.php");
 }
 ?>

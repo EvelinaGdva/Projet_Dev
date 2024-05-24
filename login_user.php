@@ -64,7 +64,7 @@ if (isset($_POST["login"])) {
     <link rel="stylesheet" href="CSS/index.css">
     <div class="register"> 
         <h2>Connexion en tant qu'utilisateur</h2><br>
-        <!-- Ajout du champ "username" -->
+        
         <div class="form-group" id="username-field">
             <input type="text" placeholder="Nom d'utilisateur" name="username" class="form-control" value="<?php echo $username; ?>" required>
         </div>

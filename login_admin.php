@@ -47,8 +47,5 @@ if (isset($_POST["login"])) {
         <div class="form-btn">
             <input type="submit" value="Connexion" name="login" class="btn btn-primary">
         </div>
-        <div class="form-link">
-            <a href="registration_restaurateur.php">Inscrivez-vous ici</a>
-        </div>
     </div>
 </form>
