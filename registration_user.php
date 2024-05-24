@@ -3,15 +3,17 @@
 require_once "Data/database.php";
 
 $email = "";
+$username  = "";
 $password = "";
 
 if (isset($_POST["register"])) {
     $email = isset($_POST["email"]) ? $_POST["email"] : "";
+    $username = isset($_POST["username"]) ? $_POST["username"] : "";
     $password = isset($_POST["password"]) ? $_POST["password"] : "";
 
     $errors = [];
 
-    if (empty($email) || empty($password)) {
+    if (empty($email) || empty($password) || empty($username)) {
         $errors[] = "Tous les champs sont obligatoires.";
     }
 
@@ -39,12 +41,14 @@ if (isset($_POST["register"])) {
         } else {
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-            $sql_insert = "INSERT INTO user (email, password) VALUES (?, ?)";
+            $sql_insert = "INSERT INTO user (email, username, password, sold) VALUES (?, ?, ?, ?)";
             $stmt_insert = $conn->prepare($sql_insert);
-            $stmt_insert->bind_param("ss", $email, $hashed_password);
+            $sold = 0; // Définir une valeur par défaut pour 'sold'
+            $stmt_insert->bind_param("sssi", $email, $username, $hashed_password, $sold);
 
             if ($stmt_insert->execute()) {
                 echo "<div class='alert alert-success'>Inscription réussie. Connectez-vous maintenant.</div>";
+                header("Location: login_user.php");
             } else {
                 echo "<div class='alert alert-danger'>Erreur lors de l'inscription. Veuillez réessayer.</div>";
             }
@@ -57,12 +61,16 @@ if (isset($_POST["register"])) {
 }
 ?>
 
+
 <form action="#registration" method="post" id="registration" enctype="multipart/form-data">
     <link rel="stylesheet" href="CSS/index.css">
     <div class="register"> 
         <h2>INSCRIPTION</h2><br>
         <div class="form-group" id="email-field">
             <input type="email" placeholder="Email" name="email" class="form-control" value="<?php echo $email; ?>" required>
+        </div>
+        <div class="form-group" id="usename-field">
+            <input type="text" placeholder="Username" name="username" class="form-control" value="<?php echo $username; ?>" required>
         </div>
         <div class="form-group">
             <input type="password" placeholder="Entrez votre mot de passe" name="password" class="form-control" required>

@@ -28,29 +28,22 @@ if (isset($_POST["login"])) {
             die("Erreur de connexion: " . $conn->connect_error);
         }
 
-        $sql_check = "SELECT id FROM user WHERE email = ?";
+        $sql_check = "SELECT id, password FROM user WHERE email = ?";
         $stmt_check = $conn->prepare($sql_check);
         $stmt_check->bind_param("s", $email);
         $stmt_check->execute();
         $result_check = $stmt_check->get_result();
 
-        if ($result_check->num_rows > 0) {
-            echo "<div class='alert alert-danger'>Un utilisateur avec cet e-mail existe déjà.</div>";
-        } else {
-            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
-            // Ajoutez ici la logique pour le champ "username"
-            $username = isset($_POST["username"]) ? $_POST["username"] : "";
-
-            $sql_insert = "INSERT INTO user (username, email, password) VALUES (?, ?, ?)";
-            $stmt_insert = $conn->prepare($sql_insert);
-            $stmt_insert->bind_param("sss", $username, $email, $hashed_password);
-
-            if ($stmt_insert->execute()) {
-                echo "<div class='alert alert-success'>Inscription réussie. Connectez-vous maintenant.</div>";
+        if ($result_check->num_rows == 1) {
+            $user = $result_check->fetch_assoc();
+            if (password_verify($password, $user['password'])) {
+                echo "<div class='alert alert-success'>Connexion réussie. Bienvenue!</div>";
+                header("Location: index_user.php");
             } else {
-                echo "<div class='alert alert-danger'>Erreur lors de l'inscription. Veuillez réessayer.</div>";
+                echo "<div class='alert alert-danger'>Mot de passe incorrect.</div>";
             }
+        } else {
+            echo "<div class='alert alert-danger'>Aucun utilisateur trouvé avec cet e-mail.</div>";
         }
     } else {
         foreach ($errors as $error) {
@@ -60,14 +53,13 @@ if (isset($_POST["login"])) {
 }
 ?>
 
+
 <form action="#login" method="post" id="login" enctype="multipart/form-data">
     <link rel="stylesheet" href="CSS/index.css">
     <div class="register"> 
         <h2>Connexion en tant qu'utilisateur</h2><br>
         
-        <div class="form-group" id="username-field">
-            <input type="text" placeholder="Nom d'utilisateur" name="username" class="form-control" value="<?php echo $username; ?>" required>
-        </div>
+        
         <div class="form-group" id="email-field">
             <input type="email" placeholder="Email" name="email" class="form-control" value="<?php echo $email; ?>" required>
         </div>

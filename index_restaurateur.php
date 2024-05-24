@@ -52,7 +52,6 @@
         $food_description = $_POST["food_description"];
         $food_price = $_POST["food_price"];
 
-        // Traitement du téléchargement de l'image (vous pouvez ajouter cette partie si nécessaire)
 
         // Requête SQL pour insérer le plat dans la base de données
         $sql = "INSERT INTO food (food_name, food_description, food_price) VALUES ('$food_name', '$food_description', '$food_price')";

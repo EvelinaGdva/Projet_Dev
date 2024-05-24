@@ -32,7 +32,7 @@ $result = $conn->query($sql);
     <h1>Liste des Aliments</h1>
     <table>
         <tr>
-            <th>Image</th>
+             <th>Image</th>
             <th>Nom</th>
             <th>Description</th>
             <th>Prix</th>

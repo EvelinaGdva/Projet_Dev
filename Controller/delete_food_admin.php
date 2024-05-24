@@ -3,7 +3,6 @@
 if (isset($_GET['id'])) {
     $plat_id = $_GET['id'];
 
-    // Connexion à la base de données
     $host = "localhost"; 
     $db_username = "root";
     $db_password = "root";

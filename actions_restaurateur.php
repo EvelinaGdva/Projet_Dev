@@ -7,7 +7,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $image = $_FILES['food_image']['name'];
         // Emplacement temporaire du fichier téléchargé
         $image_tmp = $_FILES['food_image']['tmp_name'];
-        // Emplacement où vous souhaitez enregistrer l'image
+        // Emplacement pour enregistrer l'image
         $upload_directory = 'uploads/'; // Assurez-vous que ce répertoire existe
         // Déplacer le fichier téléchargé vers le répertoire de destination
         move_uploaded_file($image_tmp, $upload_directory . $image);

@@ -1,11 +1,6 @@
 <?php
 session_start(); // Démarrez la session si ce n'est pas déjà fait
 
-// Vérifiez si l'utilisateur est connecté en tant que restaurateur
-if (!isset($_SESSION['restaurant_id'])) {
-    header("Location: login.php"); // Redirigez vers la page de connexion si l'utilisateur n'est pas connecté
-    exit();
-}
 
 // Vérifiez si le formulaire de mise à jour a été soumis
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

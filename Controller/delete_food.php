@@ -1,16 +1,12 @@
 <?php
+
+require_once "../Data/database.php";
+
 // Vérifier si l'ID du plat est fourni
 if (isset($_GET['id'])) {
     $food_id = $_GET['id'];
 
-    // Connexion à la base de données
-    $host = "localhost"; 
-    $db_username = "root";
-    $db_password = "root";
-    $database = "evelicious_munch";
-    $port = 8888;
 
-    $conn = new mysqli($host, $db_username, $db_password, $database, $port);
 
     // Vérifier la connexion
     if ($conn->connect_error) {
