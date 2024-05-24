@@ -1,6 +1,6 @@
 # Nom du Projet
 
-Commande de Repas en Ligne
+Evelicious munch
 
 ## Description
 
