@@ -1,23 +1,35 @@
-<?php 
+<?php include('Data/database.php'); ?>
 
-    include('../Data/database.php'); 
-    include('login-check.php');
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evelicious Munch</title>
 
-?>
+    <link rel="stylesheet" href="CSS/index.css">
+</head>
 
-
-<html>
-    
-    <body>
-        <div class="menu text-center">
-            <div class="wrapper">
-                <ul>
-                    <li><a href="index.php">Home</a></li>
-                    <li><a href="categoryController.php">Category</a></li>
-                    <li><a href="foodController.php">Food</a></li>
-                    <li><a href="orderController.php">Order</a></li>
-                    <li><a href="deliveryController.php">Delivery</a></li>
-                    <li><a href="logout.php">Logout</a></li>
-                </ul>
+<body>
+    <section class="navbar">
+        <div class="container">
+            <div class="logo">
+                <a href="index.php" title="Logo">
+                    <img src="Images/Logo.png" alt="Logo" class="img-responsive">
+                </a>
             </div>
+
+            <section class="food-menu">
+           <div class="menu text-right">
+    <ul>
+        <li><a href="loginAdmin.php">Administrateur</a></li> 
+        <li><a href="loginUser.php">Utilisateur</a></li> 
+        <li><a href="loginRestaurant.php">Restaurateur</a></li>
+        <li><a href="logout.php">Déconnexion</a></li>
+
+    </ul>
+</div>
+
+            <div class="clearfix"></div>
         </div>
+    </section>

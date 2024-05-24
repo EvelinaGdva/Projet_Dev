@@ -10,14 +10,14 @@
         ?>
 
 
-        <h2>Foods on Your Search <a href="#" class="text-white">"<?php echo $search; ?>"</a></h2>
+        <h2>Le plat recherché est <a href="#" class="text-white">"<?php echo $search; ?>"</a></h2>
 
     </div>
 </section>
 
 <section class="food-menu">
     <div class="container">
-        <h2 class="text-center">Food Menu</h2>
+        <h2 class="text-center">Plats</h2>
 
         <?php 
 
@@ -73,7 +73,7 @@
             }
             else
             {
-                echo "<div class='error'>Food not found.</div>";
+                echo "<div class='error'>Pas de Plat trouvé.</div>";
             }
         
         ?>

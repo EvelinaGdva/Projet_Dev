@@ -1,4 +1,4 @@
-<?php include('menu-front/menu.php'); ?>
+<?php include('Gestion/menu.php'); ?>
 
 <section class="food-search text-center">
     <div class="container">

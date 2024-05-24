@@ -3,7 +3,7 @@
 require_once "Data/database.php";
 
 $restaurant_name = "";
-$adress = "";
+$address = "";
 $email = "";
 $password = "";
 $logo = ""; 
@@ -63,9 +63,9 @@ if (isset($_POST["register"])) {
         } else {
 
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-            $sql_insert = "INSERT INTO restaurant (restaurant_name, adress, email, password, logo, description) VALUES (?, ?, ?, ?, ?, '')";
+            $sql_insert = "INSERT INTO restaurant (restaurant_name, address, email, password, logo, description) VALUES (?, ?, ?, ?, ?, '')";
             $stmt_insert = $conn->prepare($sql_insert);
-            $stmt_insert->bind_param("sssss", $restaurant_name, $adress, $email, $hashed_password, $logo);
+            $stmt_insert->bind_param("sssss", $restaurant_name, $address, $email, $hashed_password, $logo);
             
 
             if ($stmt_insert->execute()) {
