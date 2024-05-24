@@ -16,6 +16,12 @@
 <body>
 
 <div class="container">
+    <a href="index.php">
+        <img src="Images/logo.png" alt="Logo du restaurant" class="logo">
+    </a>
+
+    <a href="Controller/compte_restaurateur.php">Compte</a>
+
     <h1>Gestion du restaurant</h1>
     <?php
     // Connexion à la base de données

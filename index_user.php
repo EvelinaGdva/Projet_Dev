@@ -9,8 +9,6 @@
     </div>
 </section>
 
-
-
 <section class="restaurants">
     <div class="container">
         <h2 class="text-center">Restaurants</h2>
@@ -19,8 +17,12 @@
             // Nouvelle requête SQL pour récupérer les restaurants
             $restaurant = "SELECT * FROM restaurant";
             $res_restaurants = mysqli_query($conn, $restaurant);
-            $count_restaurants = mysqli_num_rows($res_restaurants);
 
+            if(!$res_restaurants) {
+                die("Erreur lors de l'exécution de la requête : " . mysqli_error($conn));
+            }
+
+            $count_restaurants = mysqli_num_rows($res_restaurants);
 
             if($count_restaurants > 0)
             {
@@ -30,14 +32,20 @@
                     $restaurant_name = $row['restaurant_name'];
                     $adress = $row['adress'];
                     $restaurant_image = $row['logo'];
-                        
-                    
+
                     echo "<div class='restaurant-box'>";
                     echo "<div class='restaurant-img'>";
                     if($restaurant_image == "") {
                         echo "<div class='error'>Image not available.</div>";
                     } else {
-                        echo "<a href='restaurant.php?id=$restaurant_id'><img src='Images/$restaurant_image' alt='$restaurant_name' class='img-responsive img-curve'></a>";
+                        // Debug: afficher le chemin de l'image
+                        $image_path = "Images/resto/$restaurant_image";
+                        echo "<!-- Image Path: $image_path -->";
+                        if(file_exists($image_path)) {
+                            echo "<a href='restaurant.php?id=$restaurant_id'><img src='$image_path' alt='$restaurant_name' class='img-responsive img-curve'></a>";
+                        } else {
+                            echo "<div class='error'>Image file does not exist. Path: $image_path</div>";
+                        }
                     }
                     echo "</div>";
                     echo "<div class='restaurant-desc'>";
@@ -58,4 +66,3 @@
         <div class="clearfix"></div>
     </div>
 </section>
-

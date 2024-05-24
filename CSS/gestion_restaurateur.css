@@ -5,15 +5,38 @@ body {
     padding: 0;
 }
 
+.logo {
+    width: 100px; /* Vous pouvez ajuster cette valeur selon vos besoins */
+    height: auto; /* Cela maintiendra les proportions de votre logo */
+}
+
 .container {
     width: 80%;
     margin: auto;
     padding: 20px;
 }
 
-h1, h2, h3 {
+h1 {
+    font-family: 'Arial', sans-serif;
+    font-size: 36px;
     color: #333;
+    text-align: center;
+    margin-bottom: 20px;
 }
+
+/* Style pour le sous-titre */
+h2 {
+    font-family: 'Arial', sans-serif;
+    font-size: 24px;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+/* Style pour le texte en rose */
+.rose {
+    color: pink;
+}
+
 
 /* Style des plats */
 .plat {
